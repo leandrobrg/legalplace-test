@@ -1,12 +1,12 @@
 import { Drug, Pharmacy } from "./pharmacy";
-
 import fs from "fs";
+import { DrugTypes } from "./types";
 
 const drugs = [
-  new Drug("Doliprane", 20, 30),
-  new Drug("Herbal Tea", 10, 5),
-  new Drug("Fervex", 12, 35),
-  new Drug("Magic Pill", 15, 40),
+  new Drug(DrugTypes.Doliprane, 20, 30),
+  new Drug(DrugTypes.HerbalTea, 10, 5),
+  new Drug(DrugTypes.Fervex, 12, 35),
+  new Drug(DrugTypes.MagicPill, 15, 40),
 ];
 const pharmacy = new Pharmacy(drugs);
 
@@ -16,7 +16,6 @@ for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
   log.push(JSON.parse(JSON.stringify(pharmacy.updateBenefitValue())));
 }
 
-/* eslint-disable no-console */
 fs.writeFile(
   "output.json",
   JSON.stringify({ result: log }, null, 2).concat("\n"),
@@ -28,5 +27,3 @@ fs.writeFile(
     }
   },
 );
-
-/* eslint-enable no-console */

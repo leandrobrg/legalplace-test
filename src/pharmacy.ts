@@ -1,13 +1,17 @@
+import { DrugTypes } from "./types";
+
 export class Drug {
-  constructor(name, expiresIn, benefit) {
-    this.name = name;
-    this.expiresIn = expiresIn;
-    this.benefit = benefit;
-  }
+  constructor(
+    public name: DrugTypes,
+    public expiresIn: number,
+    public benefit: number,
+  ) {}
+
+  updateBenefit(): void {}
 }
 
 export class HerbalTea extends Drug {
-  updateBenefit() {
+  updateBenefit(): void {
     if (this.expiresIn > 0) {
       this.benefit += 1;
     } else {
@@ -17,7 +21,7 @@ export class HerbalTea extends Drug {
 }
 
 export class Fervex extends Drug {
-  updateBenefit() {
+  updateBenefit(): void {
     if (this.expiresIn < 0) {
       this.benefit = 0;
     } else if (this.expiresIn <= 5) {
@@ -31,13 +35,13 @@ export class Fervex extends Drug {
 }
 
 export class MagicPill extends Drug {
-  updateBenefit() {
+  updateBenefit(): void {
     // No changes to benefit or expiresIn
   }
 }
 
 export class Dafalgan extends Drug {
-  updateBenefit() {
+  updateBenefit(): void {
     if (this.expiresIn > 0) {
       this.benefit -= 2;
     } else {
@@ -47,7 +51,7 @@ export class Dafalgan extends Drug {
 }
 
 export class DefaultDrug extends Drug {
-  updateBenefit() {
+  updateBenefit(): void {
     if (this.expiresIn > 0) {
       this.benefit -= 1;
     } else {
@@ -57,16 +61,18 @@ export class DefaultDrug extends Drug {
 }
 
 export class Pharmacy {
-  constructor(drugs = []) {
+  drugs: Drug[];
+
+  constructor(drugs: Drug[] = []) {
     this.drugs = drugs.map((drug) => {
       switch (drug.name) {
-        case "Herbal Tea":
+        case DrugTypes.HerbalTea:
           return new HerbalTea(drug.name, drug.expiresIn, drug.benefit);
-        case "Fervex":
+        case DrugTypes.Fervex:
           return new Fervex(drug.name, drug.expiresIn, drug.benefit);
-        case "Magic Pill":
+        case DrugTypes.MagicPill:
           return new MagicPill(drug.name, drug.expiresIn, drug.benefit);
-        case "Dafalgan":
+        case DrugTypes.Dafalgan:
           return new Dafalgan(drug.name, drug.expiresIn, drug.benefit);
         default:
           return new DefaultDrug(drug.name, drug.expiresIn, drug.benefit);
@@ -74,7 +80,7 @@ export class Pharmacy {
     });
   }
 
-  updateBenefitValue() {
+  updateBenefitValue(): Drug[] {
     this.drugs.forEach((drug) => {
       drug.updateBenefit();
       drug.expiresIn -= drug instanceof MagicPill ? 0 : 1;
